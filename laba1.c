@@ -18,7 +18,7 @@ int main(int argc, char** argv) {
 	scanf("%lf", &a);
 	
 	printf("vvedite koaffisent b ");
-	scanf("%lf", &b);
+	scanf("%lf", &b); 
 	
 	printf("vvedite koaffisent c ");
 	scanf("%lf", &c);
