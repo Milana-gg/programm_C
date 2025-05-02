@@ -1,38 +1,55 @@
 #include <stdio.h>
+#include <string.h>
 #include <stdlib.h>
 
-/* Создать текстовый файл с записями следующего вида:
-Иванов Петр Сергеевич 1975
-Сидоров Николай Андреевич 1981
-….
-Воробьянинов Ипполит Матвеевич 1978
 
-	Прочитать данные из этого файла и записать в другой только те строки, которые относятся к родившимся позднее 1980 года. */
-#define MAX_LINE 256
-#define MAX_NAME 50
-int main(int argc, char *argv[]) {
-	FILE *input, *output;
-	char line[MAX_LINE];
-	char surname[MAX_NAME], name[MAX_NAME], patronymic[MAX_NAME];
-	int year;
-	input = fopen("input_file.txt", "r");
-	if(input==NULL){
-		printf("mistake");
-		return 1;
-	}
-	output=fopen("output_file.txt", "w");
-	while (fgets(line, MAX_LINE, input) != NULL){
-		line[strcspn(line, "\n")] = '\0'; /*избавляемся от \n которые оставил fgets*/
-		if(sscanf(line, "%s %s %s %d", surname, name, patronymic, &year)==4){
-			if(year>1980){
-				char result [MAX_LINE];
-				snprintf(result, MAX_LINE, "%s %s %s %d\n", surname, name, patronymic, year);
-				fputs(result, output);
-			}
-		}
-	}
-	fclose(input);
-    printf("Processing is completed. The result is written in output_file.docx\n");
-	
-	return 0;
+struct humen {
+    char firstname[50];
+    char secondname[50];
+    int age;
+};
+
+int main() {
+	int i,j;
+    FILE *file;
+    char filename[100] = "file.txt";
+    struct humen *people = NULL;
+    int count = 0;
+    
+    file = fopen(filename, "r");
+    if (file == NULL) {
+        printf("Error opening file\n");
+        return 1;
+    }
+    
+    char line[150];
+    while (fgets(line, sizeof(line), file)) {
+        people= realloc(people, (count + 1) * sizeof(struct humen));
+    
+        if (sscanf(line, "%49s %49s %d",
+                  people[count].firstname,
+                  people[count].secondname,
+                  &people[count].age) == 3) {
+            count++;
+        }
+    }
+    fclose(file);
+    
+    for ( i = 0; i < count - 1; i++) {
+        for ( j = 0; j < count - i - 1; j++) {
+            if (people[j].age > people[j + 1].age) {
+                struct humen temp = people[j];
+                people[j] = people[j + 1];
+                people[j + 1] = temp;
+            }
+        }
+    }
+    
+    printf("Sorted data:\n");
+    for ( i = 0; i < count; i++) {
+        printf("%s %s %d\n", people[i].firstname, people[i].secondname, people[i].age);
+    }
+    
+    free(people);
+    return 0;
 }
