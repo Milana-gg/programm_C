@@ -11,7 +11,7 @@
 
 
 int main(int argc, char** argv) { 
-	double a,b,c; //объявляем вещемтвенные переменные 
+	double a,b,c; //объявляем вещественные переменные 
 	double x1, x2, d; 
 	//объявляем значения переменных
 	printf("vvedite koaffisent a ");
