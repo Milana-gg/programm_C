@@ -9,7 +9,7 @@
 int main(int argc, char *argv[]) {
 	double a,b,c, p, s; 
 	printf("vvedite znacheniy\n");
-	scanf("%lf%lf%lf", &a,&b,&c); 
+	scanf("%lf%lf%lf", &a,&b,&c);  
 	if (IsTriangle(a,b,c)){
 		p=perim(a,b,c);
 		s=pl(a,b,c);
